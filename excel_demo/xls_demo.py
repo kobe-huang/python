@@ -4,24 +4,6 @@ from collections import OrderedDict
 import json
 import codecs
 
-wb = xlrd.open_workbook('d:\\xxxv0.1.xlsx')
-
-# convert_list = []
-# sh = wb.sheet_by_index(0)
-# title = sh.row_values(0)
-# for rownum in range(1, sh.nrows):
-#     rowvalue = sh.row_values(rownum)
-#     single = OrderedDict()
-#     for colnum in range(0, len(rowvalue)):
-#         print(title[colnum], rowvalue[colnum])
-#         single[title[colnum]] = rowvalue[colnum]
-#     convert_list.append(single)
-    
-# j = json.dumps(convert_list)
-
-# with codecs.open('d:\\file.json',"w","utf-8") as f:
-#     f.write(j)  
-
 def FloatToString (aFloat):
     if type(aFloat) != float:
         return ""
@@ -36,11 +18,148 @@ def FloatToString (aFloat):
             return strTemp
 
 def open_excel(file):
-	try:
- 		data = xlrd.open_workbook(file)
- 		return data
-	except Exception,e:
- 		print str(e)
+  try:
+    data = xlrd.open_workbook(file)
+    return data
+  except Exception,e:
+    print str(e)
+
+
+# my_file = 'D:\kobe_doc\code\github\python\excel_demo\position_v0.1.xlsx';
+# my_out_file = "D:\\kobe_doc\\code\\github\\python\\excel_demo\\gps_data.lua";
+my_file = "D:\\kobe_doc\\code\\github\\python\\excel_demo\\111111.xlsx";
+my_out_file = "D:\\kobe_doc\\code\\github\\python\\excel_demo\\my_data.lua";
+const_pre_fix_city_str = "_city_info_";
+
+def kobe_trans_excel_file_2_lua_table(excel_path):
+    with codecs.open(my_out_file,"w","utf-8") as f:
+          f.write("\n\n\n");
+
+    workbook = xlrd.open_workbook(excel_path);
+  #得到excel的第一页的数据
+  #workbook = xlrd.open_workbook(r'F:\demo.xlsx')
+  # 获取所有sheet
+    print workbook.sheet_names(); # [u'sheet1', u'sheet2']
+    sheet_name = workbook.sheet_names()[0];
+    #print sheet_name;    
+    my_sheet_num = len(workbook.sheets())
+    for xx in xrange(0,my_sheet_num):
+
+    # 根据sheet索引或者名称获取sheet内容
+      sheet1 = workbook.sheet_by_index(xx); # sheet索引从0开始
+      my_cloum_num = sheet1.ncols;
+      
+     
+      tmp_col_name1 = "xxxx";
+      str_fix_name = const_pre_fix_city_str + tmp_col_name1 + " = { \n"; #设置
+      print my_cloum_num;
+      for x in xrange(0, my_cloum_num ):
+          my_cols = sheet1.col_values(x) # 获取列内容
+          print my_cols
+          tmp_col_name = my_cols[0];
+          str_fix_name = str_fix_name + "\n" + "  " + tmp_col_name + "= { \n" + "    "
+          tmp_row_num = len(my_cols);
+          print tmp_row_num;
+          for y in xrange(0, tmp_row_num-2):
+              if my_cols[2+y] != "":
+                  if True == isinstance(my_cols[2+y],(int,str,float)) :
+                      str_fix_name = str_fix_name + "\"" + FloatToString(my_cols[2+y])+ "\"" + ",\n" + "    ";
+                  else:   
+                      str_fix_name = str_fix_name + "\"" + my_cols[2+y] + "\""+ ",\n" + "    ";
+          str_fix_name  =  str_fix_name + "},\n";
+      str_fix_name = str_fix_name + "};\n\n\n"
+      with codecs.open(my_out_file,"a","utf-8") as f:
+          f.write(str_fix_name);  
+
+kobe_trans_excel_file_2_lua_table(my_file);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def trans_excel_file_2_lua_table(excel_path):
+    with codecs.open(my_out_file,"w","utf-8") as f:
+          f.write("\n\n\n");
+
+    workbook = xlrd.open_workbook(excel_path);
+  #得到excel的第一页的数据
+  #workbook = xlrd.open_workbook(r'F:\demo.xlsx')
+  # 获取所有sheet
+    print workbook.sheet_names(); # [u'sheet1', u'sheet2']
+    sheet_name = workbook.sheet_names()[0];
+    #print sheet_name;    
+    my_sheet_num = len(workbook.sheets())
+    for xx in xrange(0,my_sheet_num):
+
+    # 根据sheet索引或者名称获取sheet内容
+      sheet1 = workbook.sheet_by_index(xx); # sheet索引从0开始
+      my_cloum_num = sheet1.ncols;
+      
+      my_cols1      = sheet1.col_values(0);
+      tmp_col_name1 = my_cols1[2];
+
+      str_fix_name = const_pre_fix_city_str + tmp_col_name1 + " = { \n"; #设置
+      print my_cloum_num;
+      for x in xrange(0, my_cloum_num ):
+          my_cols = sheet1.col_values(x) # 获取列内容
+          print my_cols
+          tmp_col_name = my_cols[0];
+          str_fix_name = str_fix_name + "\n" + "  " + tmp_col_name + "= { \n" + "    "
+          tmp_row_num = len(my_cols);
+          print tmp_row_num;
+          for y in xrange(0, tmp_row_num-2):
+              if my_cols[2+y] != "":
+                  if True == isinstance(my_cols[2+y],(int,str,float)) :
+                      str_fix_name = str_fix_name + "\"" + FloatToString(my_cols[2+y])+ "\"" + ",\n" + "    ";
+                  else:   
+                      str_fix_name = str_fix_name + "\"" + my_cols[2+y] + "\""+ ",\n" + "    ";
+          str_fix_name  =  str_fix_name + "},\n";
+      str_fix_name = str_fix_name + "};\n\n\n"
+
+      with codecs.open(my_out_file,"a","utf-8") as f:
+          f.write(str_fix_name);        
+
+
+
+#trans_excel_file_2_lua_table(my_file);    
+
+
 
 
 #根据索引获取Excel表格中的数据  参数:file：Excel文件路径   colnameindex：表头列名所在行的所以 ，by_index：表的索引
@@ -93,42 +212,4 @@ def read_excel():
   # 获取单元格内容的数据类型
   print sheet2.cell(1,0).ctype
  
-
-
-
-my_file = 'd:\\position.xlsx';
-def trans_excel_file_2_table(excel_path):
-    workbook = xlrd.open_workbook(excel_path);
-	#得到excel的第一页的数据
-  #workbook = xlrd.open_workbook(r'F:\demo.xlsx')
-  # 获取所有sheet
-    print workbook.sheet_names(); # [u'sheet1', u'sheet2']
-    sheet_name = workbook.sheet_names()[0];
-    print sheet_name;
-    
-    # 根据sheet索引或者名称获取sheet内容
-    sheet1 = workbook.sheet_by_index(0); # sheet索引从0开始
-    my_cloum_num = sheet1.ncols;
-    str_fix_name = "_U = { \n"; #设置
-    print my_cloum_num;
-    for x in xrange(0, my_cloum_num ):
-        my_cols = sheet1.col_values(x) # 获取列内容
-        print my_cols
-        tmp_col_name = my_cols[0];
-        str_fix_name = str_fix_name + "\n" + "  " + tmp_col_name + "= { \n"
-        tmp_row_num = len(my_cols);
-        print tmp_row_num;
-        for y in xrange(0, tmp_row_num-2):
-            if my_cols[2+y] != "":
-                if True == isinstance(my_cols[2+y],(int,str,float)) :
-                    str_fix_name = str_fix_name + FloatToString(my_cols[2+y]) + ",\n";
-                else:
-                    str_fix_name = str_fix_name + my_cols[2+y] + ",\n";
-        str_fix_name  =  str_fix_name + "},\n";
-    str_fix_name = str_fix_name + "};"
-    with codecs.open('d:\\file.lua',"w","utf-8") as f:
-        f.write(str_fix_name);        
-
-
-trans_excel_file_2_table(my_file);		
 
