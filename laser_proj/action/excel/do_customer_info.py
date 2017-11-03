@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*- 
 import xlrd
+import xlwt
+
 from collections import OrderedDict
 import json
 import codecs
 import time 
 from time import strftime,gmtime
 from datetime import datetime
-
-# import importlib,sys
-# importlib.reload(sys)
-
-# my_file     = sys.path[0] + "\\xx\\xx_page_info.xlsx";
-# my_out_file = sys.path[0] + "\\xx\\sl_func__xx_page_info.lua";
-# 
-# my_file     = sys.path[0] + "\\hs\\hs_page_info.xlsx";
-# my_out_file = sys.path[0] + "\\hs\\sl_func__hs_page_info.lua";
 
 
 def FloatToString (aFloat):
@@ -38,6 +31,8 @@ def open_excel(file):
   except Exception as e:
     print (str(e))
     return False;
+
+
 
 
 #根据索引获取Excel表格中的数据  参数:file：Excel文件路径   colnameindex：表头列名所在行的所以 ，by_index：表的索引
@@ -100,3 +95,35 @@ def trans_excel_file_2_table(file):
             if "" != my_str :
                 f.write(my_str);
         f.close();
+
+
+#---------------------------------------------------------------------
+def set_style(name,height,bold=False):
+    style = xlwt.XFStyle() # 初始化样式
+
+    font = xlwt.Font() # 为样式创建字体
+    font.name = name # 'Times New Roman'
+    font.bold = bold
+    font.color_index = 4
+    font.height = height
+    style.font = font
+    return style
+
+ 
+#写excel
+def write_excel(save_path, save_contain):
+    f = xlwt.Workbook() #创建工作簿
+    '''
+    创建第一个sheet:
+    sheet1
+    '''
+    sheet1 = f.add_sheet(u'sheet1',cell_overwrite_ok=True) #创建sheet
+    row0 = ["序号","客户","项目","操作员","时间","内容"]
+
+    for i in range(0,len(row0)):
+        sheet1.write(0, i, row0[i], set_style('微软雅黑',220,True))
+
+    for i in range(len(save_contain)):  
+        for m in range(len(save_contain[i])):
+            sheet1.write(i+1, m, save_contain[i][m], set_style('微软雅黑',220,False))    
+    f.save(save_path) #保存文件
