@@ -118,7 +118,7 @@ def write_excel(save_path, save_contain):
     sheet1
     '''
     sheet1 = f.add_sheet(u'sheet1',cell_overwrite_ok=True) #创建sheet
-    row0 = ["序号","客户","项目","操作员","时间","内容"]
+    row0 = ["序号","客户","操作员","项目","时间","内容"]
 
     for i in range(0,len(row0)):
         sheet1.write(0, i, row0[i], set_style('微软雅黑',220,True))

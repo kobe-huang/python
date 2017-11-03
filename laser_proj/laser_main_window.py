@@ -64,6 +64,8 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
         #设置只能设置为数字
         self.textEdit_begin_num.setValidator(QIntValidator(1, 65535, self))
         self.textEdit_end_num.setValidator(QIntValidator(1, 65535, self))
+        self.textEdit_stop_index.setValidator(QIntValidator(1, 10000, self))
+
     
     def set_last_info(self):
         # self.config_data["user_file_path"]      = self.root_path; #输出的位置
@@ -119,7 +121,7 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
             self.textEdit_product_file.setText(user_excel_file)
             self.label_custom_file.setText("客户文件信息:"+ user_excel_file)
         else:
-            self.textEdit_product_file.setText("请输入用户表格")
+            self.textEdit_product_file.setText("请输入客户表格路径")
             self.label_custom_file.setText( "客户文件信息: 无") 
 
         #设置开始
@@ -196,6 +198,8 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
         self.pushButton_select_output_path.setEnabled(flag)
         self.textEdit_output_path.setEnabled(flag)
 
+        self.pushButton_reset.setEnabled(flag)
+
 
     def set_progress_bar(self, total = 10, now_index = 5):
         self.progressBar_print.setMaximum(total)
@@ -255,6 +259,18 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
             self.set_progress_bar(len(print_list), i+1)
             time.sleep(0.1);
 
+    @pyqtSlot()
+    def on_pushButton_reset_clicked(self):
+        R = QMessageBox.question( self, "确认", "确定删除所有信息" , QMessageBox.Yes, QMessageBox.No)## 弹出询问框  
+        if R == QMessageBox.Yes:
+            db_file = "laser.db"
+            cfg_file = "config.cfg"
+            
+            #os.remove(os.path.join(self.main.root_path, db_file))
+            os.remove(os.path.join(self.main.root_path, cfg_file))
+            self.main.del_all_print_info()
+        else:
+            print("取消")
 
 
     @pyqtSlot()
