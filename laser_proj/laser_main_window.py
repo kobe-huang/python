@@ -218,9 +218,12 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
         for k in self.print_list.keys():
             file_name = os.path.join(output_path, "__"+k+exts)
             file_hdl = open(file_name, 'w')
+            write_str = ""
             for print_item in self.print_list[k]:  
                 print(print_item);
-                file_hdl.write(print_item + "\n")       
+                write_str = write_str + print_item + "\n"
+            write_str = write_str[:-1] #去掉最后一个字符串
+            file_hdl.write(write_str)       
             file_hdl.close();
 
 
@@ -340,7 +343,7 @@ class LaserMainWindow(  QMainWindow, Ui_LaserMainWindow):
 
         for k in print_type_list.keys():
             tmp_str = " &" + k + tmp_str      
-        tmp_str  = " 组：" + tmp_str;
+        tmp_str  = "  &组：" + tmp_str;
         
         
         tmp_row_count = self.tableWidget_print_list.rowCount()

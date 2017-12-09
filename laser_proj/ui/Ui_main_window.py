@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LaserMainWindow(object):
     def setupUi(self, LaserMainWindow):
         LaserMainWindow.setObjectName("LaserMainWindow")
-        LaserMainWindow.resize(799, 641)
+        LaserMainWindow.resize(799, 627)
         self.centralwidget = QtWidgets.QWidget(LaserMainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)
@@ -58,7 +58,7 @@ class Ui_LaserMainWindow(object):
         self.pushButton_exit.setGeometry(QtCore.QRect(10, 550, 231, 31))
         self.pushButton_exit.setObjectName("pushButton_exit")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(100, 430, 31, 21))
+        self.label_2.setGeometry(QtCore.QRect(110, 430, 31, 21))
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(10, 170, 41, 31))
@@ -78,7 +78,7 @@ class Ui_LaserMainWindow(object):
         self.checkBox_select_unprint.setGeometry(QtCore.QRect(640, 50, 71, 21))
         self.checkBox_select_unprint.setObjectName("checkBox_select_unprint")
         self.checkBox_select_invert = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_select_invert.setGeometry(QtCore.QRect(580, 50, 41, 21))
+        self.checkBox_select_invert.setGeometry(QtCore.QRect(570, 50, 51, 21))
         self.checkBox_select_invert.setObjectName("checkBox_select_invert")
         self.comboBox_select_items = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_select_items.setGeometry(QtCore.QRect(80, 370, 161, 21))
