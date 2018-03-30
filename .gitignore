@@ -1,4 +1,7 @@
 *_LOC.*
 *_SER.*
 *_BAK.*
+*.pyc*
 *.pyc
+*.xlsx
+*.xls
